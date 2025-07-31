@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EGAZ Student Management System</title>
+    <style>
+        /* CSS Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #ecf0f1;
+        }
+
+        .logo span {
+            color: #3498db;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #3498db;
+        }
+
+        .auth-buttons button {
+            padding: 0.5rem 1rem;
+            margin-left: 0.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .login-btn {
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+        }
+
+        .login-btn:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .register-btn {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .register-btn:hover {
+            background-color: #2980b9;
+        }
+
+        /* Hero Section */
+        #hero-section {
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: background-image 1s ease-in-out;
+            color: white;
+            padding: 8rem 0 5rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            background-color: #34495e; /* Fallback color */
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .cta-buttons {
+            margin-top: 2rem;
+        }
+
+        .cta-buttons button {
+            padding: 0.8rem 1.5rem;
+            margin: 0 0.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .primary-cta {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .primary-cta:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .secondary-cta {
+            background-color: transparent;
+            color: white;
+            border: 1px solid white;
+        }
+
+        .secondary-cta:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 4rem 0;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.2rem;
+            color: #2c3e50;
+        }
+
+        .section-title p {
+            color: #7f8c8d;
+            max-width: 600px;
+            margin: 0.5rem auto 0;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background-color: #f9f9f9;
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: #3498db;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #7f8c8d;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #e74c3c;
+        }
+
+        .modal h2 {
+            margin-bottom: 1.5rem;
+            color: #2c3e50;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #3498db;
+            outline: none;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .form-submit:hover {
+            background-color: #2980b9;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 1rem;
+            color: #7f8c8d;
+        }
+
+        .form-footer a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Home Interface (hidden by default) */
+        .home-interface {
+            display: none;
+            padding: 2rem 0;
+            margin-top: 70px; /* Account for fixed header */
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+        }
+
+        .sidebar {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            top: 90px;
+            height: calc(100vh - 110px);
+            overflow-y: auto;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .sidebar-menu a {
+            display: block;
+            padding: 0.8rem;
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: #f0f7fd;
+            color: #3498db;
+        }
+
+        .sidebar-menu i {
+            margin-right: 0.5rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            background-color: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .content-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .content-header h2 {
+            color: #2c3e50;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+            object-fit: cover;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .application-form .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .application-form select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .status-item {
+            background-color: #f9f9f9;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        .status-item:hover {
+            transform: translateX(5px);
+        }
+
+        .status-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .badge-pending {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .badge-approved {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .badge-rejected {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 3rem 0 1rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column ul li a {
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: #3498db;
+        }
+
+        .footer-column ul li i {
+            margin-right: 0.5rem;
+            width: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: background-color 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: #3498db;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #bdc3c7;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+                height: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            nav ul li {
+                margin: 0.5rem;
+            }
+
+            .auth-buttons {
+                margin-top: 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 576px) {
+            #hero-section {
+                padding: 6rem 0 3rem;
+            }
+            
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .hero p {
+                font-size: 1rem;
+            }
+            
+            .cta-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .cta-buttons button {
+                margin: 0;
+                width: 100%;
+            }
+            
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+
+        /* Loading spinner */
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            margin: 20px auto;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Landing Page -->
+    <div id="landing-page">
+        <header>
+            <div class="container header-container">
+                <div class="logo">EGAZ<span>SMS</span></div>
+                <nav>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+                <div class="auth-buttons">
+                    <button class="login-btn" id="open-login">Login</button>
+                    <button class="register-btn" id="open-register">Register</button>
+                </div>
+            </div>
+        </header>
+
+        <section id="hero-section">
+            <div class="container">
+                <h1>Welcome to EGAZ Student Management System</h1>
+                <p>Streamline your academic journey with our comprehensive student management platform. Manage applications, track status, and verify documents all in one place.</p>
+                <div class="cta-buttons">
+                    <button class="primary-cta" id="hero-login">Student Login</button>
+                    <button class="secondary-cta" id="hero-register">Create Account</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-title">
+                    <h2>Key Features</h2>
+                    <p>Discover how EGAZ SMS can transform your academic administration experience</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3>Online Application</h3>
+                        <p>Submit your applications online with ease and track their progress in real-time.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                        <h3>Status Tracking</h3>
+                        <p>Monitor the status of your applications and receive notifications for updates.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Document Verification</h3>
+                        <p>Securely upload and verify your academic documents through our platform.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features" id="about">
+            <div class="container">
+                <div class="section-title">
+                    <h2>About EGAZ SMS</h2>
+                    <p>Our mission is to simplify student management processes for educational institutions</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <h3>For Institutions</h3>
+                        <p>Comprehensive tools to manage student applications, records, and verification processes efficiently.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3>For Students</h3>
+                        <p>Easy-to-use interface for submitting applications and tracking their status anytime, anywhere.</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Secure Platform</h3>
+                        <p>Your data is protected with industry-standard security measures and encryption.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Home Interface (Initially hidden) -->
+    <div id="home-interface" class="home-interface">
+        <div class="container">
+            <div class="dashboard">
+                <div class="sidebar">
+                    <ul class="sidebar-menu">
+                        <li><a href="#" class="active" data-section="dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
+                        <li><a href="#" data-section="application"><i class="fas fa-file-alt"></i> Application Form</a></li>
+                        <li><a href="#" data-section="status"><i class="fas fa-tasks"></i> Application Status</a></li>
+                        <li><a href="#" data-section="verification"><i class="fas fa-check-circle"></i> Verification</a></li>
+                        <li><a href="#" data-section="settings"><i class="fas fa-cog"></i> Settings</a></li>
+                        <li><a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+                    </ul>
+                </div>
+                <div class="main-content">
+                    <div class="content-header">
+                        <h2>Student Dashboard</h2>
+                        <div class="user-profile">
+                            <img src="https://ui-avatars.com/api/?name=John+Doe&background=3498db&color=fff" alt="User Profile">
+                            <span id="username-display">John Doe</span>
+                        </div>
+                    </div>
+
+                    <div class="content-section active" id="dashboard-section">
+                        <h3>Welcome to EGAZ Student Management System</h3>
+                        <p>You can navigate through the system using the sidebar menu to access different features.</p>
+                        <div class="quick-stats">
+                            <div class="status-item">
+                                <div>
+                                    <h4>Application Status</h4>
+                                    <p>Undergraduate Program</p>
+                                </div>
+                                <span class="status-badge badge-pending">Pending</span>
+                            </div>
+                            <div class="status-item">
+                                <div>
+                                    <h4>Document Verification</h4>
+                                    <p>Transcripts and Certificates</p>
+                                </div>
+                                <span class="status-badge badge-approved">Approved</span>
+                            </div>
+                            <div class="status-item">
+                                <div>
+                                    <h4>Upcoming Deadline</h4>
+                                    <p>Scholarship Application - July 30</p>
+                                </div>
+                                <span class="status-badge badge-pending">5 days left</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-section" id="application-section">
+                        <h3>Application Form</h3>
+                        <form class="application-form" id="app-form">
+                            <div class="form-group">
+                                <label for="program">Select Program</label>
+                                <select id="program" class="form-control" required>
+                                    <option value="">-- Select Program --</option>
+                                    <option value="undergrad">Undergraduate</option>
+                                    <option value="graduate">Graduate</option>
+                                    <option value="phd">PhD</option>
+                                    <option value="diploma">Diploma</option>
+                                    <option value="certificate">Certificate</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="fullname">Full Name</label>
+                                <input type="text" id="fullname" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number</label>
+                                <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Mailing Address</label>
+                                <textarea id="address" rows="3" class="form-control" placeholder="Enter your mailing address" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="documents">Upload Documents (PDF, JPG, PNG)</label>
+                                <input type="file" id="documents" multiple accept=".pdf,.jpg,.jpeg,.png" required>
+                                <small class="form-text">Maximum file size: 5MB each</small>
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" id="terms" class="form-check-input" required>
+                                <label for="terms" class="form-check-label">I agree to the terms and conditions</label>
+                            </div>
+                            <button type="submit" class="form-submit">Submit Application</button>
+                            <div class="spinner" id="form-spinner"></div>
+                        </form>
+                    </div>
+
+                    <div class="content-section" id="status-section">
+                        <h3>Application Status</h3>
+                        <div class="status-list">
+                            <div class="status-item">
+                                <div>
+                                    <h4>Undergraduate Application</h4>
+                                    <p>Submitted on: 15 June 2023</p>
+                                    <small>Application ID: EGAZ-2023-15642</small>
+                                </div>
+                                <span class="status-badge badge-pending">Pending Review</span>
+                            </div>
+                            <div class="status-item">
+                                <div>
+                                    <h4>Scholarship Application</h4>
+                                    <p>Submitted on: 20 June 2023</p>
+                                    <small>Application ID: EGAZ-2023-18753</small>
+                                </div>
+                                <span class="status-badge badge-approved">Approved</span>
+                            </div>
+                            <div class="status-item">
+                                <div>
+                                    <h4>Dormitory Application</h4>
+                                    <p>Submitted on: 25 June 2023</p>
+                                    <small>Application ID: EGAZ-2023-19864</small>
+                                </div>
+                                <span class="status-badge badge-rejected">Rejected</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="content-section" id="verification-section">
+                        <h3>Document Verification</h3>
+                        <div class="verification-list">
+                            <div class="status-item">
+                                <div>
+                                    <h4>High School Transcript</h4>
+                                    <p>Uploaded on: 10 June 2023</p>
+                                    <small>File: transcript_final.pdf</small>
+                                </div>
+                                <span class="status-badge badge-approved">Verified</span>
+                            </div>
+                            <div class="status-item">
+                                <div>
+                                    <h4>Birth Certificate</h4>
+                                    <p>Uploaded on: 12 June 2023</p>
+                                    <small>File: birth_certificate.jpg</small>
+                                </div>
+                                <span class="status-badge badge-approved">Verified</span>
+                            </div>
+                            <div class="status-item">
+                                <div>
+                                    <h4>Recommendation Letter</h4>
+                                    <p>Uploaded on: 18 June 2023</p>
+                                    <small>File: recommendation_letter.pdf</small>
+                                </div>
+                                <span class="status-badge badge-pending">Pending</span>
+                            </div>
+                        </div>
+                        <div class="upload-section" style="margin-top: 2rem;">
+                            <h4>Upload New Documents</h4>
+                            <form id="upload-form">
+                                <div class="form-group">
+                                    <label for="document-type">Document Type</label>
+                                    <select id="document-type" class="form-control" required>
+                                        <option value="">-- Select Document Type --</option>
+                                        <option value="transcript">Transcript</option>
+                                        <option value="certificate">Certificate</option>
+                                        <option value="id">Identification</option>
+                                        <option value="recommendation">Recommendation Letter</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-documents">Select Documents (PDF, JPG, PNG)</label>
+                                    <input type="file" id="new-documents" multiple accept=".pdf,.jpg,.jpeg,.png" required>
+                                    <small class="form-text">Maximum file size: 5MB each</small>
+                                </div>
+                                <button type="submit" class="form-submit">Upload for Verification</button>
+                                <div class="spinner" id="upload-spinner"></div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="content-section" id="settings-section">
+                        <h3>Account Settings</h3>
+                        <form id="settings-form">
+                            <div class="form-group">
+                                <label for="current-password">Current Password</label>
+                                <input type="password" id="current-password" placeholder="Enter current password">
+                            </div>
+                            <div class="form-group">
+                                <label for="new-password">New Password</label>
+                                <input type="password" id="new-password" placeholder="Enter new password">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirm-password">Confirm New Password</label>
+                                <input type="password" id="confirm-password" placeholder="Confirm new password">
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-pic">Profile Picture</label>
+                                <input type="file" id="profile-pic" accept="image/*">
+                            </div>
+                            <button type="submit" class="form-submit">Update Settings</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Student Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email Address</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" id="remember-me" class="form-check-input">
+                    <label for="remember-me" class="form-check-label">Remember me</label>
+                </div>
+                <button type="submit" class="form-submit">Login</button>
+                <div class="form-footer">
+                    Don't have an account? <a href="#" id="switch-to-register">Register here</a><br>
+                    <a href="#" id="forgot-password">Forgot password?</a>
+                </div>
+                <div class="spinner" id="login-spinner"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="register-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Create Student Account</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-name">Full Name</label>
+                    <input type="text" id="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">Email Address</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">Password</label>
+                    <input type="password" id="register-password" required minlength="8">
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm">Confirm Password</label>
+                    <input type="password" id="register-confirm" required minlength="8">
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" id="accept-terms" class="form-check-input" required>
+                    <label for="accept-terms" class="form-check-label">I accept the terms and conditions</label>
+                </div>
+                <button type="submit" class="form-submit">Register</button>
+                <div class="form-footer">
+                    Already have an account? <a href="#" id="switch-to-login">Login here</a>
+                </div>
+                <div class="spinner" id="register-spinner"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal" id="forgot-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Reset Password</h2>
+            <form id="forgot-form">
+                <div class="form-group">
+                    <label for="forgot-email">Email Address</label>
+                    <input type="email" id="forgot-email" required>
+                </div>
+                <button type="submit" class="form-submit">Send Reset Link</button>
+                <div class="form-footer">
+                    Remember your password? <a href="#" id="switch-to-login-from-forgot">Login here</a>
+                </div>
+                <div class="spinner" id="forgot-spinner"></div>
+            </form>
+        </div>
+    </div>
+
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>EGAZ SMS</h3>
+                    <p>Comprehensive student management system designed to streamline academic processes and enhance student experience.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#">Help Center</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">System Status</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 University Ave, Campus Town</li>
+                        <li><i class="fas fa-phone"></i> +1 (234) 567-8900</li>
+                        <li><i class="fas fa-envelope"></i> support@egaz-sms.edu</li>
+                        <li><i class="fas fa-clock"></i> Mon-Fri: 8AM - 5PM</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 EGAZ Student Management System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for the EGAZ SMS System
+        document.addEventListener('DOMContentLoaded', function() {
+            // DOM Elements
+            const landingPage = document.getElementById('landing-page');
+            const homeInterface = document.getElementById('home-interface');
+            const loginModal = document.getElementById('login-modal');
+            const registerModal = document.getElementById('register-modal');
+            const forgotModal = document.getElementById('forgot-modal');
+            const openLoginBtn = document.getElementById('open-login');
+            const openRegisterBtn = document.getElementById('open-register');
+            const heroLoginBtn = document.getElementById('hero-login');
+            const heroRegisterBtn = document.getElementById('hero-register');
+            const switchToRegister = document.getElementById('switch-to-register');
+            const switchToLogin = document.getElementById('switch-to-login');
+            const forgotPassword = document.getElementById('forgot-password');
+            const switchToLoginFromForgot = document.getElementById('switch-to-login-from-forgot');
+            const closeBtns = document.querySelectorAll('.close-btn');
+            const loginForm = document.getElementById('login-form');
+            const registerForm = document.getElementById('register-form');
+            const forgotForm = document.getElementById('forgot-form');
+            const logoutBtn = document.getElementById('logout-btn');
+            const sidebarLinks = document.querySelectorAll('.sidebar-menu a[data-section]');
+            const contentSections = document.querySelectorAll('.content-section');
+            const usernameDisplay = document.getElementById('username-display');
+            const applicationForm = document.getElementById('app-form');
+            const uploadForm = document.getElementById('upload-form');
+            const settingsForm = document.getElementById('settings-form');
+
+            // Dynamic background image rotation
+            const heroSection = document.getElementById('hero-section');
+            const heroImages = [
+                'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("images/IMG1.jpg")',
+                'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("images/IMG2.jpg")',
+                'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("images/IMG3.jpg")',
+                'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("images/IMG4.jpg")',
+                'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("images/IMG5.jpg")',
+                'linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("images/IMG6.jpg")'
+
+
+            ];
+
+            let currentImageIndex = 0;
+
+            function changeHeroBackground() {
+                heroSection.style.backgroundImage = heroImages[currentImageIndex];
+                currentImageIndex = (currentImageIndex + 1) % heroImages.length;
+            }
+
+            // Initial image
+            changeHeroBackground();
+
+            // Change every 7 seconds
+            setInterval(changeHeroBackground, 7000);
+
+            // Show modal functions
+            function showLoginModal() {
+                loginModal.style.display = 'flex';
+                registerModal.style.display = 'none';
+                forgotModal.style.display = 'none';
+            }
+
+            function showRegisterModal() {
+                registerModal.style.display = 'flex';
+                loginModal.style.display = 'none';
+                forgotModal.style.display = 'none';
+            }
+
+            function showForgotModal() {
+                forgotModal.style.display = 'flex';
+                loginModal.style.display = 'none';
+                registerModal.style.display = 'none';
+            }
+
+            // Event listeners for opening modals
+            openLoginBtn.addEventListener('click', showLoginModal);
+            heroLoginBtn.addEventListener('click', showLoginModal);
+            switchToLogin.addEventListener('click', showLoginModal);
+            switchToLoginFromForgot.addEventListener('click', showLoginModal);
+
+            openRegisterBtn.addEventListener('click', showRegisterModal);
+            heroRegisterBtn.addEventListener('click', showRegisterModal);
+            switchToRegister.addEventListener('click', showRegisterModal);
+
+            forgotPassword.addEventListener('click', function(e) {
+                e.preventDefault();
+                showForgotModal();
+            });
+
+            // Close modals when clicking X
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    loginModal.style.display = 'none';
+                    registerModal.style.display = 'none';
+                    forgotModal.style.display = 'none';
+                });
+            });
+
+            // Close modals when clicking outside
+            window.addEventListener('click', function(event) {
+                if (event.target === loginModal) {
+                    loginModal.style.display = 'none';
+                }
+                if (event.target === registerModal) {
+                    registerModal.style.display = 'none';
+                }
+                if (event.target === forgotModal) {
+                    forgotModal.style.display = 'none';
+                }
+            });
+
+            // Show loading spinner during form submission
+            function showSpinner(formId) {
+                const spinner = document.getElementById(`${formId}-spinner`);
+                if (spinner) spinner.style.display = 'block';
+            }
+
+            function hideSpinner(formId) {
+                const spinner = document.getElementById(`${formId}-spinner`);
+                if (spinner) spinner.style.display = 'none';
+            }
+
+            // Login form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                
+                // Simple validation
+                if (!email || !password) {
+                    alert('Please enter both email and password');
+                    return;
+                }
+
+                showSpinner('login');
+                
+                // Simulate API call
+                setTimeout(() => {
+                    hideSpinner('login');
+                    
+                    // Simulate successful login
+                    landingPage.style.display = 'none';
+                    homeInterface.style.display = 'block';
+                    loginModal.style.display = 'none';
+                    
+                    // Display the username (first part of email)
+                    const username = email.split('@')[0];
+                    usernameDisplay.textContent = username.charAt(0).toUpperCase() + username.slice(1);
+                    
+                    // Update profile picture
+                    const profilePic = document.querySelector('.user-profile img');
+                    profilePic.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(usernameDisplay.textContent)}&background=3498db&color=fff`;
+                    
+                    // Show success message
+                    alert('Login successful! Welcome to your dashboard.');
+                }, 1500);
+            });
+
+            // Register form submission
+            registerForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('register-name').value;
+                const email = document.getElementById('register-email').value;
+                const password = document.getElementById('register-password').value;
+                const confirmPassword = document.getElementById('register-confirm').value;
+                
+                // Validation
+                if (!name || !email || !password || !confirmPassword) {
+                    alert('Please fill in all fields');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match');
+                    return;
+                }
+                
+                if (password.length < 8) {
+                    alert('Password must be at least 8 characters long');
+                    return;
+                }
+                
+                if (!document.getElementById('accept-terms').checked) {
+                    alert('You must accept the terms and conditions');
+                    return;
+                }
+
+                showSpinner('register');
+                
+                // Simulate API call
+                setTimeout(() => {
+                    hideSpinner('register');
+                    
+                    // Simulate successful registration
+                    alert('Registration successful! Please login with your new credentials.');
+                    showLoginModal();
+                    
+                    // Auto-fill login form with new credentials
+                    document.getElementById('login-email').value = email;
+                    document.getElementById('login-password').value = password;
+                }, 1500);
+            });
+
+            // Forgot password form submission
+            forgotForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('forgot-email').value;
+                
+                if (!email) {
+                    alert('Please enter your email address');
+                    return;
+                }
+
+                showSpinner('forgot');
+                
+                // Simulate API call
+                setTimeout(() => {
+                    hideSpinner('forgot');
+                    alert(`Password reset link has been sent to ${email}. Please check your inbox.`);
+                    showLoginModal();
+                }, 1500);
+            });
+
+            // Logout functionality
+            logoutBtn.addEventListener('click', function() {
+                // Confirm logout
+                if (confirm('Are you sure you want to logout?')) {
+                    landingPage.style.display = 'block';
+                    homeInterface.style.display = 'none';
+                    
+                    // Clear form fields
+                    loginForm.reset();
+                    registerForm.reset();
+                    forgotForm.reset();
+                    
+                    // Scroll to top
+                    window.scrollTo(0, 0);
+                }
+            });
+
+            // Sidebar navigation
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links
+                    sidebarLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Get the section to show
+                    const sectionId = this.getAttribute('data-section');
+                    
+                    // Hide all content sections
+                    contentSections.forEach(section => {
+                        section.classList.remove('active');
+                    });
+                    
+                    // Show the selected section
+                    document.getElementById(`${sectionId}-section`).classList.add('active');
+                });
+            });
+
+            // Application form submission
+            applicationForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate form
+                if (!document.getElementById('terms').checked) {
+                    alert('You must agree to the terms and conditions');
+                    return;
+                }
+
+                showSpinner('form');
+                
+                // Simulate form submission
+                setTimeout(() => {
+                    hideSpinner('form');
+                    alert('Application submitted successfully! You can track the status in the Application Status section.');
+                    applicationForm.reset();
+                    
+                    // Show the status section
+                    document.querySelector('[data-section="status"]').click();
+                }, 2000);
+            });
+
+            // Document upload form submission
+            uploadForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                showSpinner('upload');
+                
+                // Simulate upload
+                setTimeout(() => {
+                    hideSpinner('upload');
+                    alert('Documents uploaded successfully for verification!');
+                    uploadForm.reset();
+                }, 2000);
+            });
+
+            // Settings form submission
+            settingsForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const newPassword = document.getElementById('new-password').value;
+                const confirmPassword = document.getElementById('confirm-password').value;
+                
+                if (newPassword && newPassword !== confirmPassword) {
+                    alert('New passwords do not match');
+                    return;
+                }
+                
+                // Simulate settings update
+                alert('Settings updated successfully!');
+                settingsForm.reset();
+            });
+
+            // Demo login for quick testing (remove in production)
+            const demoLogin = () => {
+                landingPage.style.display = 'none';
+                homeInterface.style.display = 'block';
+                usernameDisplay.textContent = "Demo User";
+                
+                // Update profile picture
+                const profilePic = document.querySelector('.user-profile img');
+                profilePic.src = `https://ui-avatars.com/api/?name=Demo+User&background=3498db&color=fff`;
+            };
+
+            // Uncomment below line to enable demo login on page load (for testing)
+            // window.addEventListener('load', demoLogin);
+        });
+    </script>
+</body>
+</html>
